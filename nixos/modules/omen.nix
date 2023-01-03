@@ -1,18 +1,9 @@
 { lib, config, pkgs, ... }:
 with lib;
-let cfg = config.kevin;
+let cfg = config.omen;
 in {
-  imports = [
-    ./omen.nix
-    ./power.nix
-    ./networking.nix
-    ./audio.nix
-    ./desktop.nix
-    ./yubikey.nix
-    ./ssh.nix
-  ];
 
-  options.kevin = {
+  options.omen = {
     defaults = mkOption {
       type = types.enum [ "none" "laptop" "desktop" ];
       default = "none";
@@ -60,29 +51,29 @@ in {
         # enableSSHSupport = true;
       };
 
-      kevin.networking.firewall.syncthing = true;
-      services.syncthing = {
-        enable = true;
-        user = "kevin";
-        dataDir = "/home/kevin/Syncthing";
-        configDir = "/home/kevin/Syncthing/.config/syncthing";
-      };
+      #kevin.networking.firewall.syncthing = true;
+      #services.syncthing = {
+      #  enable = true;
+      #  user = "kevin";
+      #  dataDir = "/home/kevin/Syncthing";
+      #  configDir = "/home/kevin/Syncthing/.config/syncthing";
+      #};
 
       services.fwupd.enable = true;
-      hardware.cpu.intel.updateMicrocode = true;
-
+      #hardware.cpu.intel.updateMicrocode = true;
+      
       boot.supportedFilesystems = [ "ntfs" ];
 
       services.printing.enable = true;
 
       virtualisation.docker.enable = true;
 
-      users.users.kevin = {
+      users.users.omen = {
         isNormalUser = true;
-        description = "Kevin Kandlbinder";
+        description = "Timo Strüker";
         extraGroups = [ "wheel" "docker" "dialout" "networkmanager" ]; 
       };
-      kevin.ssh.authorized.kevin = true;
+      #kevin.ssh.authorized.kevin = true;
     })
     (mkIf (cfg.defaults == "desktop") {
       services.xserver.videoDrivers = [ "nvidia" ];
@@ -91,21 +82,21 @@ in {
       services.clamav.daemon.enable = true;
       services.clamav.updater.enable = true;
       #services.opensnitch.enable = true;
-      networking.hostName = "kevin-PC";
+      networking.hostName = "odin";
 
       hardware.nvidia.package = config.boot.kernelPackages.nvidiaPackages.latest;
     })
     (mkIf (cfg.defaults == "laptop") {
       kevin.power.mode = "laptop";
-      networking.hostName = "kevin-tp-l580";
+      networking.hostName = "thor";
 
       services.xserver.libinput.enable = true;
 
-      hardware.opengl.extraPackages = with pkgs; [
-        vaapiIntel
-        libvdpau-va-gl
-        intel-media-driver
-      ];
+      #hardware.opengl.extraPackages = with pkgs; [
+      #  vaapiIntel
+      #  libvdpau-va-gl
+      #  intel-media-driver
+      #];
 
       boot.kernel.sysctl = {
         "vm.swappiness" = 1;

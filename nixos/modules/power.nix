@@ -25,10 +25,10 @@ in {
             CPU_SCALING_GOVERNOR_ON_AC = "schedutil";
             CPU_SCALING_GOVERNOR_ON_BAT = "schedutil";
 
-            CPU_SCALING_MIN_FREQ_ON_AC = 800000;
-            CPU_SCALING_MAX_FREQ_ON_AC = 2201000;
-            CPU_SCALING_MIN_FREQ_ON_BAT = 400000;
-            CPU_SCALING_MAX_FREQ_ON_BAT = 2100000;
+            CPU_SCALING_MIN_FREQ_ON_AC = 1400000;
+            CPU_SCALING_MAX_FREQ_ON_AC = 2100000;
+            CPU_SCALING_MIN_FREQ_ON_BAT = 1400000;
+            CPU_SCALING_MAX_FREQ_ON_BAT = 1700000;
 
             # Enable audio power saving for Intel HDA, AC97 devices (timeout in secs).
             # A value of 0 disables, >=1 enables power saving (recommended: 1).
@@ -50,18 +50,18 @@ in {
 
       };
 
-      boot.extraModprobeConfig = lib.mkMerge [
-        # idle audio card after one second
-        "options snd_hda_intel power_save=1"
-        # enable wifi power saving (keep uapsd off to maintain low latencies)
-        "options iwlwifi power_save=1 uapsd_disable=1"
-      ];
+      #boot.extraModprobeConfig = lib.mkMerge [
+      #  # idle audio card after one second
+      #  "options snd_hda_intel power_save=1"
+      #  # enable wifi power saving (keep uapsd off to maintain low latencies)
+      #  "options iwlwifi power_save=1 uapsd_disable=1"
+      #];
       
       boot.initrd.availableKernelModules = [
         "thinkpad_acpi"
       ];
       
-      boot.kernelParams = ["intel_pstate=disable"];
+      #boot.kernelParams = ["intel_pstate=disable"];
       boot.kernelModules = ["acpi_call" "coretemp" "cpuid"];
 
       services.udev.extraRules = lib.mkMerge [
